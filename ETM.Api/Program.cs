@@ -11,11 +11,17 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //Connection String
-builder.Services.AddDbContext<EtmDataContext>(option=>
+builder.Services.AddDbContext<EtmDataContext>(option =>
 option.UseSqlite(builder.Configuration.GetConnectionString("DefaultCs")));
 
 var app = builder.Build();
 
+//DataSeed
+using (var scope=app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    SeedData.Initialize(services);
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

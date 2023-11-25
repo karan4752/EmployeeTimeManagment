@@ -14,6 +14,7 @@ public class EtmDataContext : DbContext
     public DbSet<EmployeeProject> EmployeeProjects { get; set; }
     public DbSet<LeaveRequest> LeaveRequests { get; set; }
     public DbSet<Project> Projects { get; set; }
+    public DbSet<TimeSheet> TimeSheets { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         //Fluent Api
