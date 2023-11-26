@@ -1,43 +1,41 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace ETM.Api.Repository
+namespace ETM.Api;
+public class AttendanceRepository : IAttendanceRepository
 {
-    public class AttendanceRepository : IRepository<Attendance>
+    private EtmDataContext _EtmDataContext { get; set; }
+    public AttendanceRepository(EtmDataContext etmDataContext)
     {
-        private EtmDataContext _EtmDataContext { get; set; }
-        public AttendanceRepository(EtmDataContext etmDataContext)
-        {
-            _EtmDataContext = etmDataContext;
+        _EtmDataContext = etmDataContext;
 
-        }
-
-        public async Task<IEnumerable<Attendance>> GetAllAsync()
-        {
-            return await _EtmDataContext.Attendances.Include(a => a.EmployeeID).ToListAsync();
-        }
-
-        public Task<Attendance?> GetByIdAsync(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Attendance> CreatAsync(Attendance t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Attendance?> UpdateAsync(int id, Attendance t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Attendance?> DeleteAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
     }
+
+    public async Task<IEnumerable<AttendanceDto>> GetByIdAsync(int id)
+    {
+        // var attendances = await (_EtmDataContext.Attendances.
+        // Include(a => a.Employee).
+        // ThenInclude(e => e.AppUser).
+        // Where(e => e.EmployeeID == id)).ToListAsync();
+        var attendances = await (from f in _EtmDataContext.Attendances
+                                 join e in _EtmDataContext.Employees
+                                 on f.EmployeeID equals e.EmployeeID
+                                 join a in _EtmDataContext.AppUsers
+                                 on e.EmployeeID equals a.UserID
+                                 where e.EmployeeID == id
+                                 select new AttendanceDto
+                                 {
+                                     Date = f.Date,
+                                     ClockInTime = f.ClockInTime,
+                                     ClockOutTime = f.ClockOutTime,
+                                     Status = f.Status,
+                                     Username = a.Username,
+                                     FirstName = a.FirstName,
+                                     LastName = a.LastName,
+                                     Email = a.Email,
+                                     Role = a.Role
+                                 }).ToListAsync();
+
+        return attendances;
+    }
+
 }

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ETM.Api.Controllers
@@ -10,16 +6,16 @@ namespace ETM.Api.Controllers
     [Route("api/[controller]")]
     public class AttendanceController : ControllerBase
     {
-        private IRepository<Attendance> _Repository { get; }
-        public AttendanceController(IRepository<Attendance> repository)
+        private IAttendanceRepository _Repository { get; }
+        public AttendanceController(IAttendanceRepository repository)
         {
             _Repository = repository;
 
         }
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpGet("{employeeId:int}")]
+        public async Task<IActionResult> GetById([FromRoute] int employeeId)
         {
-            var attendances = await _Repository.GetAllAsync();
+            var attendances = await _Repository.GetByIdAsync(employeeId);
             if (attendances is null) return NoContent();
             return Ok(attendances);
         }

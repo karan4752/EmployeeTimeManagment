@@ -6,14 +6,14 @@ public class Employee
     public int? DepartmentID { get; set; }
     public int? ManagerID { get; set; }
 
-    public AppUser AppUser { get; set; }
-    public Department Department { get; set; }
-    public Employee Manager { get; set; }
+    public virtual AppUser AppUser { get; set; }
+    public virtual Department Department { get; set; }
+    public virtual Employee Manager { get; set; }
 
-    public ICollection<Attendance> Attendances { get; set; }
-    public ICollection<LeaveRequest> LeaveRequests { get; set; }
-    public ICollection<TimeSheet> TimeSheets { get; set; }
-    public ICollection<EmployeeProject> EmployeeProjects { get; set; }
-    public ICollection<EmployeeHierarchy> SubordinateRelations { get; set; }
-    public ICollection<EmployeeHierarchy> SuperiorRelations { get; set; }
+    public virtual ICollection<Attendance> Attendances { get; set; }
+    public virtual ICollection<LeaveRequest> LeaveRequests { get; set; }
+    public virtual ICollection<TimeSheet> TimeSheets { get; set; }
+    public virtual ICollection<EmployeeProject> EmployeeProjects { get; set; }
+    public virtual ICollection<EmployeeHierarchy> SubordinateRelations { get; set; }
+    public virtual ICollection<EmployeeHierarchy> SuperiorRelations { get; set; }
 }
