@@ -17,6 +17,7 @@ option.UseSqlite(builder.Configuration.GetConnectionString("DefaultCs")));
 
 //Adding Services
 builder.Services.AddScoped<IRepository<Department>, DepartmentRepository>();
+builder.Services.AddScoped<IRepository<Project>, ProjectRepository>();
 builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
 
 var app = builder.Build();
